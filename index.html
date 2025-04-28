@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style> 
+        html { 
+            color-scheme: dark;
+        }
+        * {
+            text-align: center;
+        }
+        canvas {
+            background-color: #222;
+            margin-top: 30px;
+        }
+    </style>
+    <title>Sleep Calculator with Canvas</title>
+</head>
+<body>
+
+<h1>Sleep Calculator</h1>
+<p>A sleep cycle is how your body sleeps in steps. Each cycle takes about 90 minutes. You go from light sleep, to deep sleep, then to dreaming (REM sleep). You feel better when you wake up at the end of a cycle, not in the middle. That’s why it’s good to sleep for 4, 5, or 6 full cycles so you wake up feeling rested.</p>
+<hr/>
+<p>What time do you want to go to bed?</p>
+<input type="time" id="bedtime">
+<button onclick="calculate()">CLICK ME TO KNOW BEST WAKE TIMES</button>
+
+<div id="results"></div>
+
+<!-- Added Canvas Section -->
+<h2>Canvas Drawing</h2>
+<p>Here is a cute canvas shapes I made. If you stare at it and count backwards from 100, you are garanteed to feel sleepy ;)</p>
+<canvas id="myCanvas" width="400" height="300"></canvas>
+
+<script>
+function calculate() {
+    var time = document.getElementById("bedtime").value;
+    if (time === "") {
+        alert("Please enter a time.");
+        return;
+    }
+
+    var parts = time.split(":");
+    var hour = parseInt(parts[0]);
+    var minute = parseInt(parts[1]);
+    var cycle = 90;
+    var text = "Wake up at:<br><ul>";
+
+    for (var i = 6; i >= 4; i--) {
+        var totalMinutes = i * cycle;
+
+        var wakeHour = hour + Math.floor((minute + totalMinutes) / 60);
+        var wakeMinute = (minute + totalMinutes) % 60;
+
+        wakeHour = wakeHour % 24;
+
+        if (wakeMinute < 10) {
+            wakeMinute = "0" + wakeMinute;
+        }
+
+        text += "<li>" + wakeHour + ":" + wakeMinute + "</li>";
+    }
+
+    text += "</ul>";
+    document.getElementById("results").innerHTML = text;
+}
+
+
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+
+ctx.fillStyle = "blue";
+ctx.fillRect(50, 50, 100, 60);
+
+ctx.beginPath();
+ctx.arc(250, 80, 40, 0, Math.PI * 2);
+ctx.fillStyle = "purple";
+ctx.fill();
+
+ctx.beginPath();
+ctx.moveTo(50, 200);
+ctx.lineTo(350, 200);
+ctx.strokeStyle = "green";
+ctx.lineWidth = 4;
+ctx.stroke();
+</script>
+
+</body>
+</html>
+
